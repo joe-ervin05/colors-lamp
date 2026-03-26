@@ -1,0 +1,86 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam stereotypeCBackgroundColor #EEF4FF
+skinparam stereotypeCBorderColor #2F4F6F
+
+class IndexPage <<boundary>> {
+  +loginName : input
+  +loginPassword : input
+  +loginButton : button
+}
+
+class ColorPage <<boundary>> {
+  +searchText : input
+  +colorText : input
+  +searchColorButton : button
+  +addColorButton : button
+  +logoutButton : button
+  +colorList : paragraph
+}
+
+class CodeJS <<control>> {
+  -urlBase : string
+  -extension : string
+  -userId : int
+  -firstName : string
+  -lastName : string
+  +doLogin()
+  +saveCookie()
+  +readCookie()
+  +doLogout()
+  +addColor()
+  +searchColor()
+}
+
+class LoginAPI <<control>> {
+  +getRequestInfo()
+  +returnWithInfo(firstName,lastName,id)
+  +returnWithError(err)
+}
+
+class AddColorAPI <<control>> {
+  +getRequestInfo()
+  +returnWithError(err)
+}
+
+class SearchColorsAPI <<control>> {
+  +getRequestInfo()
+  +returnWithInfo(searchResults)
+  +returnWithError(err)
+}
+
+class User <<entity>> {
+  +ID : int
+  +FirstName : varchar(50)
+  +LastName : varchar(50)
+  +Login : varchar(50)
+  +Password : varchar(50)
+}
+
+class Color <<entity>> {
+  +ID : int
+  +Name : varchar(50)
+  +UserID : int
+}
+
+class MySQLDatabase <<database>> {
+  +Users table
+  +Colors table
+}
+
+IndexPage ..> CodeJS : invokes doLogin()
+ColorPage ..> CodeJS : invokes searchColor(),\naddColor(), doLogout(),\nreadCookie()
+
+CodeJS ..> LoginAPI : POST /Login.php
+CodeJS ..> AddColorAPI : POST /AddColor.php
+CodeJS ..> SearchColorsAPI : POST /SearchColors.php
+
+LoginAPI ..> MySQLDatabase : SELECT user by login/password
+AddColorAPI ..> MySQLDatabase : INSERT color
+SearchColorsAPI ..> MySQLDatabase : SELECT colors by userId/search
+
+MySQLDatabase o-- User
+MySQLDatabase o-- Color
+User "1" <-- "0..*" Color : owns
+@enduml

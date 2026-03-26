@@ -1,0 +1,36 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam actorStyle awesome
+skinparam usecase {
+  BackgroundColor #F9FBFF
+  BorderColor #2F4F6F
+}
+
+actor User
+
+rectangle "Colors Web Application" {
+  usecase "Log In" as UC_Login
+  usecase "Search Colors" as UC_Search
+  usecase "Add Color" as UC_Add
+  usecase "Log Out" as UC_Logout
+  usecase "Authenticate\nCredentials" as UC_Auth
+  usecase "Read Session\nCookie" as UC_Cookie
+  usecase "Persist Color" as UC_Persist
+  usecase "Retrieve Matching\nColors" as UC_Retrieve
+}
+
+User --> UC_Login
+User --> UC_Search
+User --> UC_Add
+User --> UC_Logout
+
+UC_Login ..> UC_Auth : <<include>>
+UC_Search ..> UC_Cookie : <<include>>
+UC_Search ..> UC_Retrieve : <<include>>
+UC_Add ..> UC_Cookie : <<include>>
+UC_Add ..> UC_Persist : <<include>>
+UC_Logout ..> UC_Cookie : <<include>>
+
+@enduml

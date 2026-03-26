@@ -1,0 +1,43 @@
+digraph G {
+  graph [rankdir=TB, bgcolor="white", nodesep=0.35, ranksep=0.45];
+  node [fontname="Helvetica", shape=box, style="rounded,filled", fillcolor="#F9FBFF", color="#2F4F6F"];
+  edge [fontname="Helvetica", color="#2F4F6F"];
+
+  start [label="Start", shape=circle, width=0.25, fixedsize=true, fillcolor="#2F4F6F", fontcolor=white];
+  n1 [label="Open index.html"];
+  n2 [label="Enter login and password"];
+  n3 [label="doLogin() sends POST to Login.php"];
+  d1 [label="Credentials valid?", shape=diamond, fillcolor="#FFF7E8"];
+  ok1 [label="Parse user data\nsaveCookie()\nredirect to color.html\nreadCookie()"];
+  bad1 [label="Show invalid login message"];
+  d2 [label="Choose action", shape=diamond, fillcolor="#FFF7E8"];
+  s1 [label="Enter search text"];
+  s2 [label="searchColor() sends POST\nto SearchColors.php"];
+  d3 [label="Results found?", shape=diamond, fillcolor="#FFF7E8"];
+  s3 [label="Display matching colors"];
+  s4 [label="Show no-records/error message"];
+  a1 [label="Enter new color"];
+  a2 [label="addColor() sends POST\nto AddColor.php"];
+  a3 [label="Show success/error message"];
+  l1 [label="doLogout()\nclear cookie\nredirect to index.html"];
+  end [label="End", shape=doublecircle, width=0.3, fixedsize=true, fillcolor="#2F4F6F", fontcolor=white];
+
+  start -> n1 -> n2 -> n3 -> d1;
+  d1 -> ok1 [label="yes"];
+  d1 -> bad1 [label="no"];
+  bad1 -> end;
+  ok1 -> d2;
+
+  d2 -> s1 [label="Search"];
+  s1 -> s2 -> d3;
+  d3 -> s3 [label="yes"];
+  d3 -> s4 [label="no"];
+  s3 -> d2;
+  s4 -> d2;
+
+  d2 -> a1 [label="Add"];
+  a1 -> a2 -> a3 -> d2;
+
+  d2 -> l1 [label="Logout"];
+  l1 -> end;
+}

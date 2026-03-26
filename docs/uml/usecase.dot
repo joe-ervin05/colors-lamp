@@ -1,0 +1,35 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", nodesep=0.45, ranksep=0.85];
+  node [fontname="Helvetica"];
+  edge [fontname="Helvetica"];
+
+  user [label="\N\nUser", shape=plaintext, fontsize=15];
+
+  subgraph cluster_system {
+    label="Colors Web Application";
+    color="#4C6A88";
+    penwidth=1.3;
+    style=rounded;
+    node [shape=ellipse, style="filled", fillcolor="#F9FBFF", color="#2F4F6F"];
+    login [label="Log In"];
+    search [label="Search Colors"];
+    add [label="Add Color"];
+    logout [label="Log Out"];
+    auth [label="Authenticate\nCredentials"];
+    cookie [label="Read Session\nCookie"];
+    persist [label="Persist Color"];
+    retrieve [label="Retrieve Matching\nColors"];
+  }
+
+  user -> login;
+  user -> search;
+  user -> add;
+  user -> logout;
+
+  login -> auth [style=dashed, label="<<include>>"];
+  search -> cookie [style=dashed, label="<<include>>"];
+  search -> retrieve [style=dashed, label="<<include>>"];
+  add -> cookie [style=dashed, label="<<include>>"];
+  add -> persist [style=dashed, label="<<include>>"];
+  logout -> cookie [style=dashed, label="<<include>>"];
+}

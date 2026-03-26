@@ -1,0 +1,29 @@
+digraph G {
+  graph [rankdir=LR, bgcolor="white", nodesep=0.45, ranksep=1.0];
+  node [fontname="Helvetica", shape=record, style="filled", fillcolor="#F9FBFF", color="#2F4F6F"];
+  edge [fontname="Helvetica", color="#2F4F6F"];
+
+  IndexPage [label="{IndexPage (boundary)|loginName\lloginPassword\lloginButton\l}"];
+  ColorPage [label="{ColorPage (boundary)|searchText\lcolorText\lsearchColorButton\laddColorButton\llogoutButton\lcolorList\l}"];
+  CodeJS [label="{CodeJS (control)|urlBase\lextension\luserId\lfirstName\llastName\l|doLogin()\lsaveCookie()\lreadCookie()\ldoLogout()\laddColor()\lsearchColor()\l}"];
+  LoginAPI [label="{LoginAPI (control)| |getRequestInfo()\lreturnWithInfo()\lreturnWithError()\l}"];
+  AddColorAPI [label="{AddColorAPI (control)| |getRequestInfo()\lreturnWithError()\l}"];
+  SearchColorsAPI [label="{SearchColorsAPI (control)| |getRequestInfo()\lreturnWithInfo()\lreturnWithError()\l}"];
+  User [label="{User (entity)|ID : int\lFirstName : varchar(50)\lLastName : varchar(50)\lLogin : varchar(50)\lPassword : varchar(50)\l}"];
+  Color [label="{Color (entity)|ID : int\lName : varchar(50)\lUserID : int\l}"];
+  DB [label="{MySQLDatabase (database)|Users table\lColors table\l}", fillcolor="#EEF4FF"];
+
+  IndexPage -> CodeJS [style=dashed, label="invokes doLogin()"];
+  ColorPage -> CodeJS [style=dashed, label="invokes search/add/logout/readCookie()"];
+  CodeJS -> LoginAPI [style=dashed, label="POST /Login.php"];
+  CodeJS -> AddColorAPI [style=dashed, label="POST /AddColor.php"];
+  CodeJS -> SearchColorsAPI [style=dashed, label="POST /SearchColors.php"];
+
+  LoginAPI -> DB [style=dashed, label="SELECT user"];
+  AddColorAPI -> DB [style=dashed, label="INSERT color"];
+  SearchColorsAPI -> DB [style=dashed, label="SELECT colors"];
+
+  DB -> User [arrowhead=odiamond];
+  DB -> Color [arrowhead=odiamond];
+  User -> Color [dir=both, arrowtail=none, arrowhead=none, label="1 to 0..*"];
+}
