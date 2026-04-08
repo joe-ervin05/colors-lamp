@@ -1,0 +1,26 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [],
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "script"
+  },
+  "rules": {
+    "curly": [
+      "error",
+      "all"
+    ],
+    "no-undef": "error",
+    "no-unreachable": "error",
+    "no-unused-vars": [
+      "error",
+      {
+        "args": "none",
+        "vars": "local"
+      }
+    ]
+  }
+}
