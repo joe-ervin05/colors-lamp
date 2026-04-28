@@ -5,6 +5,21 @@ let userId = 0;
 let firstName = "";
 let lastName = "";
 
+function formatColorName(color)
+{
+	return String(color).trim().replace(/\s+/g, " ");
+}
+
+function buildAddColorPayload(color, currentUserId)
+{
+	return {color:formatColorName(color),userId:currentUserId};
+}
+
+function buildSearchColorPayload(search, currentUserId)
+{
+	return {search:formatColorName(search),userId:currentUserId};
+}
+
 function doLogin()
 {
 	userId = 0;
@@ -113,7 +128,7 @@ function addColor()
 	let newColor = document.getElementById("colorText").value;
 	document.getElementById("colorAddResult").innerHTML = "";
 
-	let tmp = {color:newColor,userId,userId};
+	let tmp = buildAddColorPayload(newColor, userId);
 	let jsonPayload = JSON.stringify( tmp );
 
 	let url = urlBase + '/AddColor.' + extension;
@@ -146,7 +161,7 @@ function searchColor()
 	
 	let colorList = "";
 
-	let tmp = {search:srch,userId:userId};
+	let tmp = buildSearchColorPayload(srch, userId);
 	let jsonPayload = JSON.stringify( tmp );
 
 	let url = urlBase + '/SearchColors.' + extension;
